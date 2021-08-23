@@ -83,3 +83,68 @@ Podria declararse la config de babel en webpack pero lo hacemos en archivos sepa
 
 ## Implementando React
 
+creemos nuestro primer componente en el archivo index y declaramos que renderize la app en elemento html con id "root"
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+const App = () => {
+    return <h1>Titulo del componente</h1>;
+};
+
+ReactDOM.render(<App />, document.getElementById('root'));
+```
+Creamos el documento index.html en /src para encontrar el elemento con id "root"
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initialscale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>movieList</title>
+</head>
+<body>
+    <section id="root"></section>
+</body>
+</html>
+```
+
+Para que esto funcione correctamente agregamos webpack para html
+
+    npm install --save-dev html-webpack-plugin
+
+y editamos webpack.config.js
+
+```javascript
+const HtmlWebPackPlugin = require('html-webpack-plugin')
+const htmlPlugin = new HtmlWebPackPlugin({
+    template: './src/index.html',
+    filename: './index.html',
+})
+
+module.exports = {
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: '"babel-loader',
+                },
+            },
+        ],
+    },
+    plugins: [htmlPlugin]
+}
+```
+
+Ahora podemos correr npm start y ver nuestra app funcionando
+
+![App Funcioando](readmeSrc\01app-funcionando.jpg)
+
+## Server de desarrollo
+
+Para hacer mas dinamico el desarrollo de la app utilizaremos un dev-server de webpack

@@ -1,1 +1,8 @@
-console.log("augante el aeto")
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+const App = () => {
+    return <h1>Titulo del componente</h1>
+};
+
+ReactDOM.render(<App />, document.getElementById('root'))
