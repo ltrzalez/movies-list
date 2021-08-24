@@ -143,8 +143,48 @@ module.exports = {
 
 Ahora podemos correr npm start y ver nuestra app funcionando
 
-![App Funcioando](readmeSrc\01app-funcionando.jpg)
+![https://github.com/ltrzalez/movies-list/blob/main/readmeSrc/01app-funcionando.jpg](readmeSrc\01app-funcionando.jpg)
 
 ## Server de desarrollo
 
-Para hacer mas dinamico el desarrollo de la app utilizaremos un dev-server de webpack
+Para hacer mas dinamico el desarrollo de la app utilizaremos un dev-server de webpack. De este modo no tendremos que crear una nueva distribucion y correrla cada vez que querramos ver nuestro desarrollo. Instalamos los paquetes
+y editamos el comando start de package.json
+
+    npm install --save-dev webpack-dev-server
+
+    "start": "webpack-dev-server --mode development --open"
+
+## Estructurando el proyecto
+
+Los docs de react no dan preferencia por como organizar el proyecto pero se suele hacer por caracteristica o ruta o tipo de archivo
+
+En este proyecto haremos algo hibrido, por tipo de archivo y despues por caracteristica. En lo practico es tener componentes de de "top-level" y "low-level". Empezemos
+
+*  Dentro de src/ agregaremos el dir /containers y un archivo llamado List.js
+
+    ```js
+    import React, { Component } from 'react';
+
+    class List extends Component {
+        render() {
+            <h1>Movie list</h1>
+        }
+    }
+
+    export default List;
+    ```
+
+* importemoslo en nuestro index.js e utilizemoslos en nuestra app
+
+    ```js
+    import List from './containers/List'
+
+    const App = () => {    
+        return <List />
+    }
+
+    ReactDOM.render(<App />, document.getElementById('root'))
+    ```
+
+
+#### TODO: update this file
