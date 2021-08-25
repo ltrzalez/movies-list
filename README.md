@@ -187,4 +187,84 @@ En este proyecto haremos algo hibrido, por tipo de archivo y despues por caracte
     ```
 
 
-#### TODO: update this file
+## recibiendo data
+
+cargamos data.json en src/assets y en src/media las imagens a usar
+
+preparamos el componetente cards para recibir informacion. el compontente card tiene el atributo movie del cual se espera que tenga los valores a renderizar
+
+
+```js
+import React from 'react'
+
+export const Card = ({ movie }) => {
+    return (<div>
+        <h2>{`#${movie.ranking} - ${movie.title} (${movie.year})`}</h2>
+        <img src={movie.img.src} alt={movie.img.alt} width='200' />
+        <p>{`Distributor: ${movie.distributor}`}</p>
+        <p>{`Amount: ${movie.amount}`}</p>
+    </div>)
+}
+```
+
+ahora para pasar la data a este componente preparamos un constructor en lista con el atributo data dentro de state
+
+```js
+    constructor() {
+        super()
+        this.state = {
+            data: [],
+            loading: true,
+        }
+    }
+```
+
+despues del constructor usamos el metodo componentDidMount() para fetchear la data antes de montar el componente.
+
+antes que eso vamos a instalar json server para simular un servidor donde fetchiar la data
+
+    npm i -D json-server
+
+y en package.json agregamos el comando 
+
+    "server": "json-server --watch src/assets/data.json --port 5000"
+
+
+
+```js
+async componentDidMount() {
+
+    const fetchingMovies = await fetch("http://localhost:5000/movies")
+    const moviesJSON = await fetchingMovies.json()
+    
+    if(moviesJSON){
+        this.state = {
+            data: moviesJSON,
+            loading: false
+        }
+    }    
+}
+```
+
+y actulizamos la funcion render pasando la data fetchiada a al comp card
+
+# TODO corrergir que no esta re rendirzancdo al fetchiar la info
+
+```js
+render() {
+    const { data, loading } = this.state
+    console.log(data)
+    if(loading) {
+        return <h1>Loading..</h1>
+    }
+
+    return data.map(el => {
+        <Card key={el.id} movie={el} />
+    })
+}
+```
+
+
+
+
+
