@@ -15,27 +15,26 @@ class List extends Component {
 
         const fetchingMovies = await fetch("http://localhost:5000/movies")
         const moviesJSON = await fetchingMovies.json()
-        console.table(moviesJSON)
 
-        if(moviesJSON){
-            this.setState = {
+        if (moviesJSON) {
+            this.setState({
                 data: moviesJSON,
                 loading: false
-            }
+            })
         }
     }
 
-
     render() {
         const { data, loading } = this.state
-        console.log(data)
         if(loading) {
-            return <h1>Loading..</h1>
+            return <h1>Cargando</h1>
+        } else {
+            return( <>
+                {data.map((movie) => {
+                    return <Card key={movie.id} movie={movie} />
+                })}
+            </>)
         }
-
-        return data.map(el => {
-            <Card key={el.id} movie={el} />
-        })
     }
 }
 

@@ -195,11 +195,12 @@ preparamos el componetente cards para recibir informacion. el compontente card t
 
 
 ```js
-import React from 'react'
+import react from 'react'
 
 export const Card = ({ movie }) => {
-    return (<div>
-        <h2>{`#${movie.ranking} - ${movie.title} (${movie.year})`}</h2>
+    return (
+    <div>
+        <h2>{`#${movie.title} (${movie.year})`}</h2>
         <img src={movie.img.src} alt={movie.img.alt} width='200' />
         <p>{`Distributor: ${movie.distributor}`}</p>
         <p>{`Amount: ${movie.amount}`}</p>
@@ -219,7 +220,7 @@ ahora para pasar la data a este componente preparamos un constructor en lista co
     }
 ```
 
-despues del constructor usamos el metodo componentDidMount() para fetchear la data antes de montar el componente.
+despues del constructor usamos el metodo componentDidMount() para fetchear la data antes de montar el componente. y actulizamos es estado con la funcion this.setState()
 
 antes que eso vamos a instalar json server para simular un servidor donde fetchiar la data
 
@@ -231,37 +232,39 @@ y en package.json agregamos el comando
 
 
 
+
 ```js
 async componentDidMount() {
 
     const fetchingMovies = await fetch("http://localhost:5000/movies")
     const moviesJSON = await fetchingMovies.json()
     
-    if(moviesJSON){
-        this.state = {
+    if (moviesJSON) {
+        this.setState({
             data: moviesJSON,
             loading: false
-        }
+        })            
     }    
 }
 ```
 
-y actulizamos la funcion render pasando la data fetchiada a al comp card
+y actulizamos la funcion render pasando la data fetchiada a al comp card. mostrara un mensaje de "cargando" en caso de que la info no este
 
-# TODO corrergir que no esta re rendirzancdo al fetchiar la info
+
 
 ```js
-render() {
-    const { data, loading } = this.state
-    console.log(data)
-    if(loading) {
-        return <h1>Loading..</h1>
+    render() {
+        const { data, loading } = this.state
+        if(loading) {
+            return <h1>Cargando</h1>
+        } else {
+            return( <>
+                {data.map((movie) => {
+                    return <Card key={movie.id} movie={movie} />
+                })}
+            </>)
+        }
     }
-
-    return data.map(el => {
-        <Card key={el.id} movie={el} />
-    })
-}
 ```
 
 
